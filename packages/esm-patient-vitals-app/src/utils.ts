@@ -21,11 +21,11 @@ export function launchFormEntry(formUuid: string, encounterUuid?: string, formNa
 
 /**
  * Launches the appropriate workspace based on the current visit and configuration.
- * @param currentVisit - The current visit.
+ * @param visitInContext - The current visit.
  * @param config - The configuration object.
  */
-export function launchVitalsAndBiometricsForm(currentVisit: Visit, config: ConfigObject) {
-  if (!currentVisit) {
+export function launchVitalsAndBiometricsForm(visitInContext: Visit, config: ConfigObject) {
+  if (!visitInContext) {
     launchStartVisitPrompt();
     return;
   }

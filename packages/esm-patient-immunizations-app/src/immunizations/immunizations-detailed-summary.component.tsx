@@ -48,7 +48,7 @@ const ImmunizationsDetailedSummary: React.FC<ImmunizationsDetailedSummaryProps> 
   const locale = i18n.language.replace('_', '-');
   const pageUrl = window.getOpenmrsSpaBase() + `patient/${patientUuid}/chart`;
   const urlLabel = t('goToSummary', 'Go to Summary');
-  const { currentVisit } = useVisit(patientUuid);
+  const { visitInContext } = useVisit(patientUuid);
   const isTablet = useLayoutType() === 'tablet';
   const sequenceDefinitions = immunizationsConfig?.sequenceDefinitions;
 
@@ -56,12 +56,12 @@ const ImmunizationsDetailedSummary: React.FC<ImmunizationsDetailedSummaryProps> 
   const consolidatedImmunizations = linkConfiguredSequences(existingImmunizations, sequenceDefinitions);
 
   const launchImmunizationsForm = React.useCallback(() => {
-    if (!currentVisit) {
+    if (!visitInContext) {
       launchStartVisitPrompt();
       return;
     }
     launchPatientWorkspace('immunization-form-workspace');
-  }, [currentVisit, launchStartVisitPrompt]);
+  }, [visitInContext, launchStartVisitPrompt]);
 
   const sortedImmunizations = orderBy(
     consolidatedImmunizations,

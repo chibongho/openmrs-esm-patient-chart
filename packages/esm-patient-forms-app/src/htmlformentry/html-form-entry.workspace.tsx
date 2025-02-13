@@ -18,7 +18,7 @@ const HtmlFormEntry: React.FC<HtmlFormEntryComponentProps> = ({
   formInfo,
 }) => {
   const { patient } = usePatient(patientUuid);
-  const { currentVisit } = useVisitOrOfflineVisit(patientUuid);
+  const { visitInContext } = useVisitOrOfflineVisit(patientUuid);
   const { encounterUuid, visitUuid, htmlForm } = formInfo || {};
 
   // we always want to prompt the user before closing/hiding the workspace because we can't guarantee maintaining the state of the form
@@ -28,13 +28,13 @@ const HtmlFormEntry: React.FC<HtmlFormEntryComponentProps> = ({
   // which tells HFE-UI to send a message to the parent window to close the workspace when the form is saved or cancelled
   const url = `${window.openmrsBase}/htmlformentryui/htmlform/${
     htmlForm.formUiPage
-  }.page?patientId=${patientUuid}&visitId=${visitUuid ?? currentVisit?.uuid ?? null}&definitionUiResource=${
+  }.page?patientId=${patientUuid}&visitId=${visitUuid ?? visitInContext?.uuid ?? null}&definitionUiResource=${
     htmlForm.formUiResource
   }&returnUrl=post-message:close-workspace`;
   const urlWithEncounter = `${window.openmrsBase}/htmlformentryui/htmlform/${
     htmlForm.formEditUiPage
   }.page?patientId=${patientUuid}&visitId=${
-    visitUuid ?? currentVisit?.uuid ?? null
+    visitUuid ?? visitInContext?.uuid ?? null
   }&encounterId=${encounterUuid}&definitionUiResource=${
     htmlForm.formUiResource
   }&returnUrl=post-message:close-workspace`;

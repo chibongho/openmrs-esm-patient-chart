@@ -10,7 +10,7 @@ interface StopVisitOverflowMenuItemProps {
 
 const StopVisitOverflowMenuItem: React.FC<StopVisitOverflowMenuItemProps> = ({ patientUuid }) => {
   const { t } = useTranslation();
-  const { currentVisit } = useVisit(patientUuid);
+  const { visitInContext } = useVisit(patientUuid);
 
   const handleLaunchModal = useCallback(() => {
     const dispose = showModal('end-visit-dialog', {
@@ -20,7 +20,7 @@ const StopVisitOverflowMenuItem: React.FC<StopVisitOverflowMenuItemProps> = ({ p
   }, [patientUuid]);
 
   return (
-    currentVisit && (
+    visitInContext && (
       <OverflowMenuItem
         className={styles.menuitem}
         itemText={`${t('endVisit', 'End visit')}`}

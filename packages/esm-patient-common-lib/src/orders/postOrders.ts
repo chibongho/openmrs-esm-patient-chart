@@ -13,15 +13,15 @@ import type {
 export async function postOrdersOnNewEncounter(
   patientUuid: string,
   orderEncounterType: string,
-  currentVisit: Visit | null,
+  visitInContext: Visit | null,
   sessionLocationUuid: string,
   abortController?: AbortController,
 ) {
   const now = new Date();
-  const visitStartDate = parseDate(currentVisit?.startDatetime);
-  const visitEndDate = parseDate(currentVisit?.stopDatetime);
+  const visitStartDate = parseDate(visitInContext?.startDatetime);
+  const visitEndDate = parseDate(visitInContext?.stopDatetime);
   let encounterDate: Date;
-  if (!currentVisit || (visitStartDate < now && (!visitEndDate || visitEndDate > now))) {
+  if (!visitInContext || (visitStartDate < now && (!visitEndDate || visitEndDate > now))) {
     encounterDate = now;
   } else {
     console.warn(
@@ -46,7 +46,7 @@ export async function postOrdersOnNewEncounter(
     location: sessionLocationUuid,
     encounterType: orderEncounterType,
     encounterDatetime: encounterDate,
-    visit: currentVisit?.uuid,
+    visit: visitInContext?.uuid,
     obs: [],
     orders,
   };

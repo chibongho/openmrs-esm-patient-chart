@@ -74,7 +74,7 @@ export function useOrderEncounter(patientUuid: string): {
       ? {
           visitRequired: true,
           isLoading: visit?.isLoading,
-          encounterUuid: visit?.currentVisit?.encounters?.[0]?.uuid,
+          encounterUuid: visit?.visitInContext?.encounters?.[0]?.uuid,
           error: visit?.error,
           mutate: visit?.mutate,
         }

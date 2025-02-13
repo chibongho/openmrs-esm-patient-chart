@@ -51,7 +51,7 @@ import {
 import { type ChartConfig } from '../../config-schema';
 import { useDefaultVisitLocation } from '../hooks/useDefaultVisitLocation';
 import { useEmrConfiguration } from '../hooks/useEmrConfiguration';
-import { invalidateUseVisits, useInfiniteVisits, useVisits } from '../visits-widget/visit.resource';
+import { invalidateUseVisits, useInfiniteVisits } from '../visits-widget/visit.resource';
 import { useVisitAttributeTypes } from '../hooks/useVisitAttributeType';
 import { MemoizedRecommendedVisitType } from './recommended-visit-type.component';
 import {
@@ -106,7 +106,7 @@ const StartVisitForm: React.FC<StartVisitFormProps> = ({
   const [contentSwitcherIndex, setContentSwitcherIndex] = useState(config.showRecommendedVisitTypeTab ? 0 : 1);
   const visitHeaderSlotState = useMemo(() => ({ patientUuid }), [patientUuid]);
   const { activePatientEnrollment, isLoading } = useActivePatientEnrollment(patientUuid);
-  const { mutate: mutateCurrentVisit } = useVisit(patientUuid);
+  const { mutate: mutateVisitInContext } = useVisit(patientUuid);
   const { mutate: mutateInfiniteVisits } = useInfiniteVisits(patientUuid);
   const allVisitTypes = useConditionalVisitTypes();
 
@@ -556,7 +556,7 @@ const StartVisitForm: React.FC<StartVisitFormProps> = ({
             // do nothing, this catches any reject promises used for short-circuiting
           })
           .finally(() => {
-            mutateCurrentVisit();
+            mutateVisitInContext();
             invalidateUseVisits(patientUuid);
             mutateInfiniteVisits();
           });
@@ -568,7 +568,7 @@ const StartVisitForm: React.FC<StartVisitFormProps> = ({
           payload.startDatetime,
         ).then(
           () => {
-            mutateCurrentVisit();
+            mutateVisitInContext();
             closeWorkspace({ ignoreChanges: true });
             showSnackbar({
               isLowContrast: true,
@@ -600,7 +600,7 @@ const StartVisitForm: React.FC<StartVisitFormProps> = ({
       extraVisitInfo,
       handleVisitAttributes,
       isOnline,
-      mutateCurrentVisit,
+      mutateVisitInContext,
       mutateInfiniteVisits,
       visitFormCallbacks,
       patientUuid,

@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import { type WorkspacesInfo, getDefaultsFromConfigSchema, useConfig, useWorkspaces } from '@openmrs/esm-framework';
 import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import { mockPatient, getByTextWithMarkup, renderWithSwr, waitForLoadingToFinish } from 'tools';
-import { mockVitalsConfig, mockCurrentVisit, mockConceptUnits, mockConceptMetadata, formattedVitals } from '__mocks__';
+import { mockVitalsConfig, mockVisitInContext, mockConceptUnits, mockConceptMetadata, formattedVitals } from '__mocks__';
 import { configSchema, type ConfigObject } from '../config-schema';
 import { patientVitalsBiometricsFormWorkspace } from '../constants';
 import { invalidateCachedVitalsAndBiometrics, useVitalsAndBiometrics } from '../common';
@@ -29,7 +29,7 @@ jest.mock('@openmrs/esm-patient-common-lib', () => {
   return {
     ...originalModule,
     launchPatientWorkspace: jest.fn(),
-    useVisitOrOfflineVisit: jest.fn().mockImplementation(() => ({ currentVisit: mockCurrentVisit })),
+    useVisitOrOfflineVisit: jest.fn().mockImplementation(() => ({ currentVisit: mockVisitInContext })),
   };
 });
 

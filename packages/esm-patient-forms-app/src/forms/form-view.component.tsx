@@ -66,7 +66,7 @@ const FormView: React.FC<FormViewProps> = ({
   const config = useConfig() as ConfigObject;
   const isTablet = useLayoutType() === 'tablet';
   const htmlFormEntryForms = config.htmlFormEntryForms;
-  const { currentVisit } = useVisitOrOfflineVisit(patientUuid);
+  const { visitInContext } = useVisitOrOfflineVisit(patientUuid);
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredForms = useMemo(() => {
@@ -180,12 +180,12 @@ const FormView: React.FC<FormViewProps> = ({
                                   htmlFormEntryForms,
                                   patientUuid,
                                   row.id,
-                                  currentVisit?.uuid,
+                                  visitInContext?.uuid,
                                   undefined,
                                   results[index].form.display ?? results[index].form.name,
-                                  currentVisit?.visitType?.uuid,
-                                  currentVisit?.startDatetime,
-                                  currentVisit?.stopDatetime,
+                                  visitInContext?.visitType?.uuid,
+                                  visitInContext?.startDatetime,
+                                  visitInContext?.stopDatetime,
                                   mutateForms,
                                 )
                               }
@@ -202,12 +202,12 @@ const FormView: React.FC<FormViewProps> = ({
                                   htmlFormEntryForms,
                                   patientUuid,
                                   patientUuid,
-                                  currentVisit?.uuid,
+                                  visitInContext?.uuid,
                                   first(results[index].associatedEncounters)?.uuid,
                                   results[index].form.display ?? results[index].form.name,
-                                  currentVisit?.visitType.uuid,
-                                  currentVisit?.startDatetime,
-                                  currentVisit?.stopDatetime,
+                                  visitInContext?.visitType.uuid,
+                                  visitInContext?.startDatetime,
+                                  visitInContext?.stopDatetime,
                                   mutateForms,
                                 )
                               }
@@ -228,12 +228,12 @@ const FormView: React.FC<FormViewProps> = ({
                                     htmlFormEntryForms,
                                     patientUuid,
                                     patientUuid,
-                                    currentVisit?.uuid,
+                                    visitInContext?.uuid,
                                     first(results[index].associatedEncounters)?.uuid,
                                     results[index].form.display ?? results[index].form.name,
-                                    currentVisit?.visitType.uuid,
-                                    currentVisit?.startDatetime,
-                                    currentVisit?.stopDatetime,
+                                    visitInContext?.visitType.uuid,
+                                    visitInContext?.startDatetime,
+                                    visitInContext?.stopDatetime,
                                     mutateForms,
                                   )
                                 }

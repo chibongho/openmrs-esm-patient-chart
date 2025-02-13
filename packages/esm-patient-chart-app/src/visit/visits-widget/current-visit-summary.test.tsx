@@ -13,10 +13,14 @@ describe('CurrentVisitSummary', () => {
       activeVisit: null,
       currentVisit: null,
       currentVisitIsRetrospective: false,
+      visitInContext: null,
+      visitInContextIsRetrospective: false,
+      visitInContextUuid: null,
       error: null,
       isLoading: false,
       isValidating: false,
       mutate: jest.fn(),
+      setVisitContext: jest.fn(),
     });
 
     render(<CurrentVisitSummary patientUuid="some-uuid" />);
@@ -25,29 +29,34 @@ describe('CurrentVisitSummary', () => {
   });
 
   test('renders a visit summary when for the active visit', async () => {
+    const mockVisitInContext = {
+      uuid: 'some-uuid',
+      display: 'Visit 1',
+      startDatetime: '2021-03-23T10:00:00.000+0300',
+      stopDatetime: null,
+      location: {
+        uuid: 'some-uuid',
+        display: 'Location 1',
+      },
+      visitType: {
+        uuid: 'some-uuid',
+        display: 'Visit Type 1',
+      },
+      encounters: [],
+    };
     mockGetConfig.mockResolvedValue({ htmlFormEntryForms: [] });
     mockUseVisits.mockReturnValueOnce({
       activeVisit: null,
-      currentVisit: {
-        uuid: 'some-uuid',
-        display: 'Visit 1',
-        startDatetime: '2021-03-23T10:00:00.000+0300',
-        stopDatetime: null,
-        location: {
-          uuid: 'some-uuid',
-          display: 'Location 1',
-        },
-        visitType: {
-          uuid: 'some-uuid',
-          display: 'Visit Type 1',
-        },
-        encounters: [],
-      },
+      currentVisit: mockVisitInContext,
       currentVisitIsRetrospective: false,
       error: null,
       isLoading: false,
       isValidating: false,
       mutate: jest.fn(),
+      visitInContext: mockVisitInContext,
+      visitInContextIsRetrospective: false,
+      visitInContextUuid: null,
+      setVisitContext: jest.fn(),
     });
 
     render(<CurrentVisitSummary patientUuid="some-uuid" />);

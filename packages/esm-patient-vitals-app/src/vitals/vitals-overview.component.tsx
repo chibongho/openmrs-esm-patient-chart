@@ -34,7 +34,7 @@ const VitalsOverview: React.FC<VitalsOverviewProps> = ({ patientUuid, pageSize, 
   const config = useConfig<ConfigObject>();
   const headerTitle = t('vitals', 'Vitals');
   const [chartView, setChartView] = useState(false);
-  const { currentVisit } = useVisitOrOfflineVisit(patientUuid);
+  const { visitInContext } = useVisitOrOfflineVisit(patientUuid);
   const isTablet = useLayoutType() === 'tablet';
   const [isPrinting, setIsPrinting] = useState(false);
   const contentToPrintRef = useRef(null);
@@ -46,8 +46,8 @@ const VitalsOverview: React.FC<VitalsOverviewProps> = ({ patientUuid, pageSize, 
   const showPrintButton = config.vitals.showPrintButton && !chartView;
 
   const launchVitalsBiometricsForm = useCallback(() => {
-    launchVitalsAndBiometricsForm(currentVisit, config);
-  }, [config, currentVisit]);
+    launchVitalsAndBiometricsForm(visitInContext, config);
+  }, [config, visitInContext]);
 
   const patientDetails = useMemo(() => {
     const getGender = (gender: string): string => {

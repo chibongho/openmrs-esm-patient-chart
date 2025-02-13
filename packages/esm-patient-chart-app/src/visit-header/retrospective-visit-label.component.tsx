@@ -5,12 +5,12 @@ import { type Visit, formatDatetime, parseDate } from '@openmrs/esm-framework';
 import styles from './retrospective-visit-label.scss';
 
 interface RetrospectiveVisitLabelProps {
-  currentVisit: Visit;
+  visitInContext: Visit;
 }
 
-const RetrospectiveVisitLabel: React.FC<RetrospectiveVisitLabelProps> = ({ currentVisit }) => {
+const RetrospectiveVisitLabel: React.FC<RetrospectiveVisitLabelProps> = ({ visitInContext }) => {
   const { t } = useTranslation();
-  if (!currentVisit) {
+  if (!visitInContext) {
     return <></>;
   }
   return (
@@ -20,14 +20,14 @@ const RetrospectiveVisitLabel: React.FC<RetrospectiveVisitLabelProps> = ({ curre
       </ToggletipButton>
       <ToggletipContent>
         <div role="tooltip">
-          <h6 className={styles.heading}>{currentVisit?.visitType?.display}</h6>
+          <h6 className={styles.heading}>{visitInContext?.visitType?.display}</h6>
           <div>
             <span className={styles.tooltipSmallText}>{t('startDate', 'Start date')}: </span>
-            <span>{formatDatetime(parseDate(currentVisit?.startDatetime), { mode: 'wide' })}</span>
+            <span>{formatDatetime(parseDate(visitInContext?.startDatetime), { mode: 'wide' })}</span>
           </div>
           <div>
             <span className={styles.tooltipSmallText}>{t('endDate', 'End date')}: </span>
-            <span>{formatDatetime(parseDate(currentVisit?.stopDatetime), { mode: 'wide' })}</span>
+            <span>{formatDatetime(parseDate(visitInContext?.stopDatetime), { mode: 'wide' })}</span>
           </div>
         </div>
       </ToggletipContent>

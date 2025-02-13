@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import { getDefaultsFromConfigSchema, showModal, useConfig } from '@openmrs/esm-framework';
 import { launchFormEntryOrHtmlForms, useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
 import { configSchema, type ConfigObject } from '../config-schema';
-import { mockCurrentVisit, mockForms } from '__mocks__';
+import { mockVisitInContext, mockForms } from '__mocks__';
 import { mockPatient } from 'tools';
 import FormView from './form-view.component';
 
@@ -61,7 +61,7 @@ describe('FormView', () => {
     const user = userEvent.setup();
 
     mockUseVisitOrOfflineVisit.mockReturnValue({
-      currentVisit: mockCurrentVisit,
+      currentVisit: mockVisitInContext,
       error: null,
     });
 

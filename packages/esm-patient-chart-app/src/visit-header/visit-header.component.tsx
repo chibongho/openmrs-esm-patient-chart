@@ -48,8 +48,8 @@ const PatientInfo: React.FC<PatientInfoProps> = ({ patient }) => {
   const name = patient ? getPatientName(patient) : '';
   const patientUuid = `${patient?.id}`;
   const patientNameIsTooLong = !isTablet && name.trim().length > 25;
-  const { currentVisit } = useVisit(patientUuid);
-  const { queueEntry } = useVisitQueueEntry(patientUuid, currentVisit?.uuid);
+  const { visitInContext } = useVisit(patientUuid);
+  const { queueEntry } = useVisitQueueEntry(patientUuid, visitInContext?.uuid);
 
   const visitType = queueEntry?.visitType ?? '';
   const priority = queueEntry?.priority ?? '';
@@ -123,7 +123,7 @@ function launchStartVisitForm() {
 
 const VisitHeader: React.FC<{ patient: fhir.Patient }> = ({ patient }) => {
   const { t } = useTranslation();
-  const { currentVisit, isLoading } = useVisit(patient?.id);
+  const { visitInContext, isLoading } = useVisit(patient?.id);
   const [isSideMenuExpanded, setIsSideMenuExpanded] = useState(false);
   const navMenuItems = useAssignedExtensions('patient-chart-dashboard-slot').map((extension) => extension.id);
   const { logo } = useConfig();
@@ -131,7 +131,7 @@ const VisitHeader: React.FC<{ patient: fhir.Patient }> = ({ patient }) => {
   const isTablet = useLayoutType() === 'tablet';
 
   const showHamburger = useLayoutType() !== 'large-desktop' && navMenuItems.length > 0;
-  const currentVisitIsRetrospective = Boolean(currentVisit && currentVisit.stopDatetime);
+  const visitInContextIsRetrospective = Boolean(visitInContext && visitInContext.stopDatetime);
 
   const toggleSideMenu = useCallback(
     (state?: boolean) => setIsSideMenuExpanded((prevState) => (state !== undefined ? state : !prevState)),
@@ -176,12 +176,12 @@ const VisitHeader: React.FC<{ patient: fhir.Patient }> = ({ patient }) => {
       </ConfigurableLink>
       <div className={styles.navDivider} />
       <div className={styles.patientDetails}>{patient && <PatientInfo patient={patient} />}</div>
-      {currentVisitIsRetrospective && <RetrospectiveVisitLabel currentVisit={currentVisit} />}
+      {visitInContextIsRetrospective && <RetrospectiveVisitLabel visitInContext={visitInContext} />}
       <HeaderGlobalBar>
         {systemVisitEnabled && (
           <>
             <ExtensionSlot name="visit-header-right-slot" />
-            {!isLoading && !currentVisit && !isDeceased && (
+            {!isLoading && !visitInContext && !isDeceased && (
               <Button
                 className={styles.startVisitButton}
                 onClick={launchStartVisitForm}
@@ -191,7 +191,7 @@ const VisitHeader: React.FC<{ patient: fhir.Patient }> = ({ patient }) => {
                 {t('startAVisit', 'Start a visit')}
               </Button>
             )}
-            {!isLoading && !!currentVisit && (
+            {!isLoading && !!visitInContext && (
               <Button
                 onClick={() => openModal(patient?.id)}
                 className={styles.startVisitButton}

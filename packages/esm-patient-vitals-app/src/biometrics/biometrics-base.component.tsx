@@ -30,11 +30,11 @@ const BiometricsBase: React.FC<BiometricsBaseProps> = ({ patientUuid, pageSize, 
   const { bmiUnit } = config.biometrics;
   const { data: biometrics, isLoading, error, isValidating } = useVitalsAndBiometrics(patientUuid, 'biometrics');
   const { data: conceptUnits } = useVitalsConceptMetadata();
-  const { currentVisit } = useVisitOrOfflineVisit(patientUuid);
+  const { visitInContext } = useVisitOrOfflineVisit(patientUuid);
 
   const launchBiometricsForm = useCallback(
-    () => launchVitalsAndBiometricsForm(currentVisit, config),
-    [config, currentVisit],
+    () => launchVitalsAndBiometricsForm(visitInContext, config),
+    [config, visitInContext],
   );
 
   const tableHeaders: Array<BiometricsTableHeader> = [

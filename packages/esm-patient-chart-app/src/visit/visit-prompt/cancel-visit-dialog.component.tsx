@@ -14,8 +14,8 @@ interface CancelVisitDialogProps {
 
 const CancelVisitDialog: React.FC<CancelVisitDialogProps> = ({ patientUuid, closeModal }) => {
   const { t } = useTranslation();
-  const { currentVisit } = useVisit(patientUuid);
-  const visitQueryEntry = useVisitQueueEntry(patientUuid, currentVisit?.uuid);
+  const { visitInContext } = useVisit(patientUuid);
+  const visitQueryEntry = useVisitQueueEntry(patientUuid, visitInContext?.uuid);
 
   const onDeleteVisit = useCallback(() => {
     const queueEntry = visitQueryEntry?.queueEntry;
@@ -25,7 +25,7 @@ const CancelVisitDialog: React.FC<CancelVisitDialogProps> = ({ patientUuid, clos
     closeModal();
   }, [visitQueryEntry?.queueEntry, closeModal]);
 
-  const { initiateDeletingVisit, isDeletingVisit } = useDeleteVisit(patientUuid, currentVisit, onDeleteVisit);
+  const { initiateDeletingVisit, isDeletingVisit } = useDeleteVisit(patientUuid, visitInContext, onDeleteVisit);
 
   return (
     <div>

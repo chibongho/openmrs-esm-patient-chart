@@ -2,7 +2,7 @@ import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { screen, render } from '@testing-library/react';
 import { showSnackbar, updateVisit, useVisit, type Visit, type FetchResponse } from '@openmrs/esm-framework';
-import { mockCurrentVisit } from '__mocks__';
+import { mockVisitInContext } from '__mocks__';
 import EndVisitDialog from './end-visit-dialog.component';
 
 const endVisitPayload = {
@@ -18,13 +18,17 @@ const mockUpdateVisit = jest.mocked(updateVisit);
 describe('End visit dialog', () => {
   beforeEach(() => {
     mockUseVisit.mockReturnValue({
-      activeVisit: mockCurrentVisit,
-      currentVisit: mockCurrentVisit,
+      activeVisit: mockVisitInContext,
+      currentVisit: mockVisitInContext,
       currentVisitIsRetrospective: false,
       error: null,
       isLoading: false,
       isValidating: false,
       mutate: mockMutate,
+      visitInContext: mockVisitInContext,
+      visitInContextIsRetrospective: false,
+      visitInContextUuid: null,
+      setVisitContext: jest.fn(),
     });
   });
 
@@ -60,7 +64,7 @@ describe('End visit dialog', () => {
 
     await user.click(endVisitButton);
 
-    expect(updateVisit).toHaveBeenCalledWith(mockCurrentVisit.uuid, endVisitPayload, expect.anything());
+    expect(updateVisit).toHaveBeenCalledWith(mockVisitInContext.uuid, endVisitPayload, expect.anything());
 
     expect(mockShowSnackbar).toHaveBeenCalledWith({
       isLowContrast: true,
@@ -96,7 +100,7 @@ describe('End visit dialog', () => {
 
     await user.click(endVisitButton);
 
-    expect(updateVisit).toHaveBeenCalledWith(mockCurrentVisit.uuid, endVisitPayload, new AbortController());
+    expect(updateVisit).toHaveBeenCalledWith(mockVisitInContext.uuid, endVisitPayload, new AbortController());
     expect(mockShowSnackbar).toHaveBeenCalledWith({
       subtitle: 'Internal error message',
       kind: 'error',

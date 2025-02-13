@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { getDefaultsFromConfigSchema, useConfig } from '@openmrs/esm-framework';
 import { useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
 import { configSchema, type ConfigObject } from '../config-schema';
-import { mockCurrentVisit } from '__mocks__';
+import { mockVisitInContext } from '__mocks__';
 import FormsDashboard from './forms-dashboard.component';
 
 const mockUseConfig = jest.mocked(useConfig<ConfigObject>);
@@ -33,7 +33,7 @@ mockUseConfig.mockReturnValue({ ...getDefaultsFromConfigSchema(configSchema), ht
 describe('FormsDashboard', () => {
   test('renders an empty state if there are no forms persisted on the server', async () => {
     mockUseVisitOrOfflineVisit.mockReturnValue({
-      currentVisit: mockCurrentVisit,
+      currentVisit: mockVisitInContext,
       error: null,
     });
 

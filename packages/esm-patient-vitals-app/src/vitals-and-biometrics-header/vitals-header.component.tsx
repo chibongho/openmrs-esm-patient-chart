@@ -39,7 +39,7 @@ const VitalsHeader: React.FC<VitalsHeaderProps> = ({ patientUuid, hideLinks = fa
   const latestVitals = vitals?.[0];
   const [showDetailsPanel, setShowDetailsPanel] = useState(false);
   const toggleDetailsPanel = () => setShowDetailsPanel(!showDetailsPanel);
-  const { currentVisit } = useVisitOrOfflineVisit(patientUuid);
+  const { visitInContext } = useVisitOrOfflineVisit(patientUuid);
   const { workspaces } = useWorkspaces();
 
   const isWorkspaceOpen = useCallback(() => Boolean(workspaces?.length), [workspaces]);
@@ -47,9 +47,9 @@ const VitalsHeader: React.FC<VitalsHeaderProps> = ({ patientUuid, hideLinks = fa
   const launchVitalsAndBiometricsForm = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
-      launchForm(currentVisit, config);
+      launchForm(visitInContext, config);
     },
-    [config, currentVisit],
+    [config, visitInContext],
   );
 
   if (isLoading) {
@@ -59,7 +59,7 @@ const VitalsHeader: React.FC<VitalsHeaderProps> = ({ patientUuid, hideLinks = fa
   }
 
   if (latestVitals && Object.keys(latestVitals)?.length && conceptMetadata?.length) {
-    const hasActiveVisit = Boolean(currentVisit?.uuid);
+    const hasActiveVisit = Boolean(visitInContext?.uuid);
     const vitalsTakenToday = Boolean(dayjs(latestVitals?.date).isToday());
     const vitalsOverdue = hasActiveVisit && !vitalsTakenToday;
     const now = dayjs();

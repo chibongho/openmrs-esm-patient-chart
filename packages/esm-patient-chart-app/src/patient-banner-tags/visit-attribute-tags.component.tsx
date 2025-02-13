@@ -27,12 +27,12 @@ const getAttributeValue = (attributeType, value) => {
 };
 
 const VisitAttributeTags: React.FC<VisitAttributeTagsProps> = ({ patientUuid }) => {
-  const { currentVisit } = useVisitOrOfflineVisit(patientUuid);
+  const { visitInContext } = useVisitOrOfflineVisit(patientUuid);
   const { visitAttributeTypes } = useConfig<ChartConfig>();
 
   return (
     <>
-      {currentVisit?.attributes
+      {visitInContext?.attributes
         ?.filter(
           (attribute) =>
             visitAttributeTypes.find(({ uuid }) => attribute?.attributeType?.uuid === uuid)?.displayInThePatientBanner,

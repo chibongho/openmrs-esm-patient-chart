@@ -24,7 +24,7 @@ mockUseConfig.mockReturnValue({
 });
 
 mockUseVisit.mockReturnValue({
-  currentVisit: null,
+  visitInContext: null,
 } as VisitReturnType);
 
 describe('StartVisitOverflowMenuItem', () => {

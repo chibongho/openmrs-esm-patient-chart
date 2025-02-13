@@ -31,7 +31,7 @@ const FormsDashboard: React.FC<FormsDashboardProps> = ({
   const htmlFormEntryForms = config.htmlFormEntryForms;
   const { patientUuid: fetchedPatientUuid } = usePatient(patientUuid);
   const { data: forms, error, mutateForms } = useForms(patientUuid, undefined, undefined, !isOnline, config.orderBy);
-  const { currentVisit } = useVisitOrOfflineVisit(patientUuid);
+  const { visitInContext } = useVisitOrOfflineVisit(patientUuid);
 
   const handleFormOpen = useCallback(
     (formUuid: string, encounterUuid: string, formName: string) => {
@@ -39,12 +39,12 @@ const FormsDashboard: React.FC<FormsDashboardProps> = ({
         htmlFormEntryForms,
         fetchedPatientUuid,
         formUuid,
-        currentVisit?.uuid,
+        visitInContext?.uuid,
         encounterUuid,
         formName,
-        currentVisit?.visitType.uuid,
-        currentVisit?.startDatetime,
-        currentVisit?.stopDatetime,
+        visitInContext?.visitType.uuid,
+        visitInContext?.startDatetime,
+        visitInContext?.stopDatetime,
         mutateForms,
         clinicalFormsWorkspaceName,
         formEntryWorkspaceName,
@@ -52,7 +52,7 @@ const FormsDashboard: React.FC<FormsDashboardProps> = ({
       );
     },
     [
-      currentVisit,
+      visitInContext,
       htmlFormEntryForms,
       mutateForms,
       fetchedPatientUuid,

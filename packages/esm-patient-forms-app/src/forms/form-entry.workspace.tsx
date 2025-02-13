@@ -25,17 +25,17 @@ const FormEntry: React.FC<FormEntryComponentProps> = ({
   const { encounterUuid, formUuid, visitStartDatetime, visitStopDatetime, visitTypeUuid, visitUuid, additionalProps } =
     formInfo || {};
   const { patient } = usePatient(patientUuid);
-  const { currentVisit } = useVisitOrOfflineVisit(patientUuid);
+  const { visitInContext } = useVisitOrOfflineVisit(patientUuid);
   const [showForm, setShowForm] = useState(true);
   const isOnline = useConnectivity();
   const state = useMemo(
     () => ({
       view: 'form',
       formUuid: formUuid ?? null,
-      visitUuid: visitUuid ?? currentVisit?.uuid ?? null,
-      visitTypeUuid: visitTypeUuid ?? currentVisit?.visitType?.uuid ?? null,
-      visitStartDatetime: visitStartDatetime ?? currentVisit?.startDatetime ?? null,
-      visitStopDatetime: visitStopDatetime ?? currentVisit?.stopDatetime ?? null,
+      visitUuid: visitUuid ?? visitInContext?.uuid ?? null,
+      visitTypeUuid: visitTypeUuid ?? visitInContext?.visitType?.uuid ?? null,
+      visitStartDatetime: visitStartDatetime ?? visitInContext?.startDatetime ?? null,
+      visitStopDatetime: visitStopDatetime ?? visitInContext?.stopDatetime ?? null,
       isOffline: !isOnline,
       patientUuid: patientUuid ?? null,
       patient,
@@ -59,10 +59,10 @@ const FormEntry: React.FC<FormEntryComponentProps> = ({
       encounterUuid,
       visitStartDatetime,
       visitStopDatetime,
-      currentVisit?.uuid,
-      currentVisit?.visitType?.uuid,
-      currentVisit?.startDatetime,
-      currentVisit?.stopDatetime,
+      visitInContext?.uuid,
+      visitInContext?.visitType?.uuid,
+      visitInContext?.startDatetime,
+      visitInContext?.stopDatetime,
       patientUuid,
       patient,
       isOnline,

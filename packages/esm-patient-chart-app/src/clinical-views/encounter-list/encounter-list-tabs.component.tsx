@@ -23,7 +23,7 @@ const EncounterListTabsComponent: React.FC<EncounterListTabsComponentProps> = ({
   const { t } = useTranslation();
   const tabsConfig = getMenuItemTabsConfiguration(tabDefinitions, configConcepts);
   const patient = usePatient(patientUuid);
-  const { currentVisit } = useVisit(patientUuid);
+  const { visitInContext } = useVisit(patientUuid);
   const tabFilters = useMemo(() => {
     return tabsConfig.map((tab) => ({
       name: tab.name,
@@ -54,7 +54,7 @@ const EncounterListTabsComponent: React.FC<EncounterListTabsComponentProps> = ({
                   launchOptions={tab.launchOptions}
                   headerTitle={tab.headerTitle}
                   description={tab.description}
-                  currentVisit={currentVisit}
+                  visitInContext={visitInContext}
                   deathStatus={patient?.patient?.deceasedBoolean}
                 />
               </TabPanel>

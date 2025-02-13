@@ -39,7 +39,7 @@ export interface EncounterListProps {
   filter?: (encounter: Encounter) => boolean;
   afterFormSaveAction?: () => void;
   deathStatus?: boolean;
-  currentVisit: Visit;
+  visitInContext: Visit;
 }
 
 export const EncounterList: React.FC<EncounterListProps> = ({
@@ -52,7 +52,7 @@ export const EncounterList: React.FC<EncounterListProps> = ({
   filter,
   launchOptions,
   afterFormSaveAction,
-  currentVisit,
+  visitInContext,
   deathStatus,
 }) => {
   const { t } = useTranslation();
@@ -104,9 +104,9 @@ export const EncounterList: React.FC<EncounterListProps> = ({
 
   const createLaunchFormAction = useCallback(
     (encounter: Encounter, mode: Mode) => () => {
-      launchEncounterForm(formsJson, currentVisit, mode, onFormSave, encounter.uuid, null, patientUuid);
+      launchEncounterForm(formsJson, visitInContext, mode, onFormSave, encounter.uuid, null, patientUuid);
     },
-    [formsJson, onFormSave, patientUuid, currentVisit],
+    [formsJson, onFormSave, patientUuid, visitInContext],
   );
 
   const handleDeleteEncounter = useCallback(
@@ -197,7 +197,7 @@ export const EncounterList: React.FC<EncounterListProps> = ({
                       ? handleDeleteEncounter(encounter.uuid, encounter.encounterType.name)
                       : launchEncounterForm(
                           formsJson,
-                          currentVisit,
+                          visitInContext,
                           actionItem.mode === 'enter' ? 'add' : actionItem.mode,
                           onFormSave,
                           encounter.uuid,
@@ -224,7 +224,7 @@ export const EncounterList: React.FC<EncounterListProps> = ({
     handleDeleteEncounter,
     onFormSave,
     patientUuid,
-    currentVisit,
+    visitInContext,
   ]);
 
   const headers = useMemo(() => {
@@ -245,7 +245,7 @@ export const EncounterList: React.FC<EncounterListProps> = ({
           iconDescription="Add"
           onClick={(e) => {
             e.preventDefault();
-            launchEncounterForm(formsJson, currentVisit, 'add', onFormSave, '', '*', patientUuid);
+            launchEncounterForm(formsJson, visitInContext, 'add', onFormSave, '', '*', patientUuid);
           }}
         >
           {t(displayText)}
@@ -253,7 +253,7 @@ export const EncounterList: React.FC<EncounterListProps> = ({
       );
     }
     return null;
-  }, [formsJson, displayText, onFormSave, patientUuid, t, currentVisit]);
+  }, [formsJson, displayText, onFormSave, patientUuid, t, visitInContext]);
 
   if (isLoading === true || isLoadingFormsJson === true) {
     return <DataTableSkeleton rowCount={10} />;
@@ -288,7 +288,7 @@ export const EncounterList: React.FC<EncounterListProps> = ({
           launchForm={
             hideFormLauncher || deathStatus
               ? null
-              : () => launchEncounterForm(formsJson, currentVisit, 'add', onFormSave, '', '*', patientUuid)
+              : () => launchEncounterForm(formsJson, visitInContext, 'add', onFormSave, '', '*', patientUuid)
           }
         />
       )}

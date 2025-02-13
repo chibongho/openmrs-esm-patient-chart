@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { type Visit, showSnackbar, useVisit } from '@openmrs/esm-framework';
-import { deleteVisit, restoreVisit, useVisits } from '../visits-widget/visit.resource';
+import { deleteVisit, restoreVisit } from '../visits-widget/visit.resource';
 
 export function useDeleteVisit(patientUuid: string, visit: Visit, onVisitDelete = () => {}, onVisitRestore = () => {}) {
   const { t } = useTranslation();
-  const { mutateVisits } = useVisits(patientUuid);
-  const { mutate: mutateCurrentVisit } = useVisit(patientUuid);
+  const { mutate: mutateVisit } = useVisit(patientUuid);
   const [isDeletingVisit, setIsDeletingVisit] = useState(false);
 
   const restoreDeletedVisit = () => {
@@ -19,8 +18,7 @@ export function useDeleteVisit(patientUuid: string, visit: Visit, onVisitDelete 
           }),
           kind: 'success',
         });
-        mutateVisits();
-        mutateCurrentVisit();
+        mutateVisit();
         onVisitRestore?.();
       })
       .catch(() => {
@@ -36,14 +34,13 @@ export function useDeleteVisit(patientUuid: string, visit: Visit, onVisitDelete 
 
   const initiateDeletingVisit = () => {
     setIsDeletingVisit(true);
-    const isCurrentVisitDeleted = !visit?.stopDatetime; // True if it's an active visit
+    const isVisitDeleted = !visit?.stopDatetime; // True if it's an active visit
 
     deleteVisit(visit?.uuid)
       .then(() => {
-        mutateVisits();
-        mutateCurrentVisit();
+        mutateVisit();
 
-        if (!isCurrentVisitDeleted) {
+        if (!isVisitDeleted) {
           showSnackbar({
             title: t('visitDeleted', '{{visit}} deleted', {
               visit: visit?.visitType?.display ?? t('visit', 'Visit'),
@@ -69,7 +66,7 @@ export function useDeleteVisit(patientUuid: string, visit: Visit, onVisitDelete 
       })
       .catch(() => {
         showSnackbar({
-          title: isCurrentVisitDeleted
+          title: isVisitDeleted
             ? t('errorCancellingVisit', 'Error cancelling active visit')
             : t('errorDeletingVisit', 'Error deleting visit'),
           kind: 'error',

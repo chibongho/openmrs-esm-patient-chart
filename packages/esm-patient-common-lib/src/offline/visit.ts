@@ -64,11 +64,26 @@ export function useOfflineVisit(patientUuid: string): ReturnType<typeof useVisit
   return {
     activeVisit: offlineVisitState.data,
     currentVisit: offlineVisitState.data,
+    currentVisitIsRetrospective: false,
+    visitInContext: offlineVisitState.data,
+    visitInContextIsRetrospective: false,
     isLoading: offlineVisitState.isLoading,
     isValidating: false,
-    currentVisitIsRetrospective: false,
     error: offlineVisitState.error,
+    visitInContextUuid: offlineVisitState.data?.uuid,
     mutate: () => {},
+    setVisitContext(newSelectedVisit: Visit) {
+      setOfflineVisitState({
+        data: newSelectedVisit,
+        error: null,
+        isLoading: false
+      });
+
+      return {
+        patientUuid: newSelectedVisit.patient.uuid,
+        visitInContextUuid: newSelectedVisit.uuid
+      }
+    }
   };
 }
 
@@ -82,13 +97,13 @@ export function useOfflineVisit(patientUuid: string): ReturnType<typeof useVisit
 export function useAutoCreatedOfflineVisit(patientUuid: string, offlineVisitTypeUuid: string) {
   const isOnline = useConnectivity();
   const location = useSession()?.sessionLocation?.uuid;
-  const { currentVisit, isValidating, error, mutate } = useOfflineVisit(patientUuid);
+  const { visitInContext, isValidating, error, mutate } = useOfflineVisit(patientUuid);
 
   useEffect(() => {
-    if (!isOnline && !isValidating && !currentVisit && !error) {
+    if (!isOnline && !isValidating && !visitInContext && !error) {
       createOfflineVisitForPatient(patientUuid, location, offlineVisitTypeUuid, new Date()).finally(() => mutate());
     }
-  }, [isOnline, currentVisit, isValidating, error, mutate, location, offlineVisitTypeUuid, patientUuid]);
+  }, [isOnline, visitInContext, isValidating, error, mutate, location, offlineVisitTypeUuid, patientUuid]);
 }
 
 export async function getOfflineVisitForPatient(patientUuid: string) {

@@ -14,7 +14,7 @@ import {
 } from '@openmrs/esm-framework';
 import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import { getByTextWithMarkup, mockPatient, mockPatientWithLongName } from 'tools';
-import { mockCurrentVisit } from '__mocks__';
+import { mockVisitInContext } from '__mocks__';
 import VisitHeader from './visit-header.component';
 
 const mockAge = jest.mocked(age);
@@ -55,6 +55,10 @@ describe('Visit header', () => {
       isLoading: false,
       isValidating: null,
       mutate: jest.fn(),
+      visitInContext: null,
+      visitInContextIsRetrospective: false,
+      visitInContextUuid: null,
+      setVisitContext: jest.fn(),
     });
     mockUseLayoutType.mockReturnValue('tablet');
 
@@ -98,6 +102,10 @@ describe('Visit header', () => {
       isLoading: false,
       isValidating: null,
       mutate: jest.fn(),
+      visitInContext: null,
+      visitInContextIsRetrospective: false,
+      visitInContextUuid: null,
+      setVisitContext: jest.fn(),
     });
     mockUseLayoutType.mockReturnValue('small-desktop');
 
@@ -111,13 +119,17 @@ describe('Visit header', () => {
   it('should be able to show configurable stop visit button and modal to stop current visit', async () => {
     const user = userEvent.setup();
     mockUseVisit.mockReturnValue({
-      activeVisit: mockCurrentVisit,
-      currentVisit: mockCurrentVisit,
+      activeVisit: mockVisitInContext,
+      currentVisit: mockVisitInContext,
       currentVisitIsRetrospective: false,
       error: null,
       isLoading: false,
       isValidating: null,
       mutate: jest.fn(),
+      visitInContext: mockVisitInContext,
+      visitInContextIsRetrospective: false,
+      visitInContextUuid: null,
+      setVisitContext: jest.fn(),
     });
     mockUseLayoutType.mockReturnValue('small-desktop');
 

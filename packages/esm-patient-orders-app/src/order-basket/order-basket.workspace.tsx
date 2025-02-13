@@ -34,7 +34,7 @@ const OrderBasket: React.FC<DefaultPatientWorkspaceProps> = ({
   const isTablet = useLayoutType() === 'tablet';
   const config = useConfig<ConfigObject>();
   const session = useSession();
-  const { currentVisit } = useVisitOrOfflineVisit(patientUuid);
+  const { visitInContext } = useVisitOrOfflineVisit(patientUuid);
   const { orders, clearOrders } = useOrderBasket();
   const [ordersWithErrors, setOrdersWithErrors] = useState<OrderBasketItem[]>([]);
   const {
@@ -70,7 +70,7 @@ const OrderBasket: React.FC<DefaultPatientWorkspaceProps> = ({
         await postOrdersOnNewEncounter(
           patientUuid,
           config?.orderEncounterType,
-          visitRequired ? currentVisit : null,
+          visitRequired ? visitInContext : null,
           session?.sessionLocation?.uuid,
           abortController,
         );
@@ -100,7 +100,7 @@ const OrderBasket: React.FC<DefaultPatientWorkspaceProps> = ({
     setIsSavingOrders(false);
     return () => abortController.abort();
   }, [
-    currentVisit,
+    visitInContext,
     visitRequired,
     clearOrders,
     closeWorkspaceWithSavedChanges,
@@ -176,7 +176,7 @@ const OrderBasket: React.FC<DefaultPatientWorkspaceProps> = ({
                 isSavingOrders ||
                 !orders?.length ||
                 isLoadingEncounterUuid ||
-                (visitRequired && !currentVisit) ||
+                (visitRequired && !visitInContext) ||
                 orders?.some(({ isOrderIncomplete }) => isOrderIncomplete)
               }
             >
@@ -189,7 +189,7 @@ const OrderBasket: React.FC<DefaultPatientWorkspaceProps> = ({
           </ButtonSet>
         </div>
       </div>
-      {visitRequired && !currentVisit && (
+      {visitRequired && !visitInContext && (
         <ActionableNotification
           kind="error"
           actionButtonLabel={t('startVisit', 'Start visit')}

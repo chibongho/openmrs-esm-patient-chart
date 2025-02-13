@@ -7,7 +7,7 @@ import {
 import { isEmpty } from 'lodash-es';
 
 export function launchFormEntryOrHtmlForms(
-  currentVisit: Visit | undefined,
+  visitInContext: Visit | undefined,
   formUuid: string,
   patient: fhir.Patient,
   htmlFormEntryForms: Array<HtmlFormEntryForm>,
@@ -15,13 +15,13 @@ export function launchFormEntryOrHtmlForms(
   formName?: string,
   mutateForms?: () => void,
 ) {
-  if (currentVisit) {
+  if (visitInContext) {
     const htmlForm = htmlFormEntryForms.find((form) => form.formUuid === formUuid);
     if (isEmpty(htmlForm)) {
-      launchFormEntry(formUuid, patient.id, encounterUuid, formName, mutateForms, currentVisit);
+      launchFormEntry(formUuid, patient.id, encounterUuid, formName, mutateForms, visitInContext);
     } else {
       navigate({
-        to: `\${openmrsBase}/htmlformentryui/htmlform/${htmlForm.formUiPage}.page?patientId=${patient.id}&visitId=${currentVisit.uuid}&definitionUiResource=${htmlForm.formUiResource}&returnUrl=${window.location.href}`,
+        to: `\${openmrsBase}/htmlformentryui/htmlform/${htmlForm.formUiPage}.page?patientId=${patient.id}&visitId=${visitInContext.uuid}&definitionUiResource=${htmlForm.formUiResource}&returnUrl=${window.location.href}`,
       });
     }
   } else {
@@ -35,11 +35,11 @@ export function launchFormEntry(
   encounterUuid?: string,
   formName?: string,
   mutateForm?: () => void,
-  currentVisit?: Visit,
+  visitInContext?: Visit,
 ) {
   launchPatientWorkspace('patient-form-entry-workspace', {
     workspaceTitle: formName,
     mutateForm,
-    formInfo: { encounterUuid, formUuid, visit: currentVisit },
+    formInfo: { encounterUuid, formUuid, visit: visitInContext },
   });
 }

@@ -3,7 +3,7 @@ import StopVisitOverflowMenuItem from './stop-visit.component';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { showModal, useVisit } from '@openmrs/esm-framework';
-import { mockCurrentVisit } from '__mocks__';
+import { mockVisitInContext } from '__mocks__';
 import { mockPatient } from 'tools';
 
 const mockUseVisit = jest.mocked(useVisit);
@@ -19,7 +19,7 @@ describe('StopVisitOverflowMenuItem', () => {
   it('should be able to stop current visit', async () => {
     const user = userEvent.setup();
 
-    mockUseVisit.mockReturnValue({ currentVisit: mockCurrentVisit } as ReturnType<typeof useVisit>);
+    mockUseVisit.mockReturnValue({ visitInContext: mockVisitInContext } as ReturnType<typeof useVisit>);
 
     render(<StopVisitOverflowMenuItem patientUuid={mockPatient.id} />);
 
@@ -32,7 +32,7 @@ describe('StopVisitOverflowMenuItem', () => {
   it('should be able to show configured label in button to stop current visit', async () => {
     const user = userEvent.setup();
 
-    mockUseVisit.mockReturnValue({ currentVisit: mockCurrentVisit } as ReturnType<typeof useVisit>);
+    mockUseVisit.mockReturnValue({ visitInContext: mockVisitInContext } as ReturnType<typeof useVisit>);
 
     render(<StopVisitOverflowMenuItem patientUuid={mockPatient.id} />);
 

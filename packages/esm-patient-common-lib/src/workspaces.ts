@@ -45,12 +45,12 @@ export function launchPatientChartWithWorkspaceOpen({
 export function useLaunchWorkspaceRequiringVisit<T extends object>(workspaceName: string) {
   const { patientUuid } = usePatientChartStore();
   const { systemVisitEnabled } = useSystemVisitSetting();
-  const { currentVisit } = useVisitOrOfflineVisit(patientUuid);
+  const { visitInContext } = useVisitOrOfflineVisit(patientUuid);
   const isRdeEnabled = useFeatureFlag('rde');
 
   const launchPatientWorkspaceCb = useCallback(
     (additionalProps?: T) => {
-      if (!systemVisitEnabled || currentVisit) {
+      if (!systemVisitEnabled || visitInContext) {
         launchPatientWorkspace(workspaceName, additionalProps);
       } else {
         if (isRdeEnabled) {
@@ -65,7 +65,7 @@ export function useLaunchWorkspaceRequiringVisit<T extends object>(workspaceName
         }
       }
     },
-    [currentVisit, systemVisitEnabled, workspaceName, isRdeEnabled, patientUuid],
+    [visitInContext, systemVisitEnabled, workspaceName, isRdeEnabled, patientUuid],
   );
   return launchPatientWorkspaceCb;
 }

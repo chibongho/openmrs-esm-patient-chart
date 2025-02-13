@@ -1,9 +1,9 @@
+import { Button, ModalBody, ModalFooter, ModalHeader } from '@carbon/react';
+import { showSnackbar, updateVisit, useVisit } from '@openmrs/esm-framework';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, ModalBody, ModalFooter, ModalHeader } from '@carbon/react';
-import { setCurrentVisit, showSnackbar, updateVisit, useVisit } from '@openmrs/esm-framework';
-import { useVisitQueueEntry } from '../queue-entry/queue.resource';
 import { removeQueuedPatient } from '../hooks/useServiceQueue';
+import { useVisitQueueEntry } from '../queue-entry/queue.resource';
 import styles from './end-visit-dialog.scss';
 
 interface EndVisitDialogProps {
@@ -13,12 +13,12 @@ interface EndVisitDialogProps {
 
 const EndVisitDialog: React.FC<EndVisitDialogProps> = ({ patientUuid, closeModal }) => {
   const { t } = useTranslation();
-  const { currentVisit, currentVisitIsRetrospective, mutate } = useVisit(patientUuid);
-  const { queueEntry } = useVisitQueueEntry(patientUuid, currentVisit?.uuid);
+  const { visitInContext, visitInContextIsRetrospective, mutate, setVisitContext } = useVisit(patientUuid);
+  const { queueEntry } = useVisitQueueEntry(patientUuid, visitInContext?.uuid);
 
   const handleEndVisit = () => {
-    if (currentVisitIsRetrospective) {
-      setCurrentVisit(null, null);
+    if (visitInContextIsRetrospective) {
+      setVisitContext(null);
       closeModal();
     } else {
       const endVisitPayload = {
@@ -27,7 +27,7 @@ const EndVisitDialog: React.FC<EndVisitDialogProps> = ({ patientUuid, closeModal
 
       const abortController = new AbortController();
 
-      updateVisit(currentVisit.uuid, endVisitPayload, abortController)
+      updateVisit(visitInContext.uuid, endVisitPayload, abortController)
         .then((response) => {
           if (queueEntry) {
             removeQueuedPatient(

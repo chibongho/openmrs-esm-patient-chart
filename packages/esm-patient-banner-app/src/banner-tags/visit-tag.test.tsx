@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { formatDatetime, parseDate } from '@openmrs/esm-framework';
 import { useVisitOrOfflineVisit } from '@openmrs/esm-patient-common-lib';
-import { mockCurrentVisit } from '__mocks__';
+import { mockVisitInContext } from '__mocks__';
 import { mockPatient } from 'tools';
 import VisitTag from './visit-tag.extension';
 
@@ -16,8 +16,8 @@ jest.mock('@openmrs/esm-patient-common-lib', () => ({
 describe('VisitBannerTag', () => {
   it('renders an active visit tag when an active visit is ongoing', () => {
     mockUseVisitOrOfflineVisit.mockReturnValue({
-      activeVisit: mockCurrentVisit,
-      currentVisit: mockCurrentVisit,
+      activeVisit: mockVisitInContext,
+      visitInContext: mockVisitInContext,
       currentVisitIsRetrospective: false,
       error: null,
       isLoading: false,
@@ -29,9 +29,9 @@ describe('VisitBannerTag', () => {
     render(<VisitTag patientUuid={mockPatient.id} patient={patient} />);
 
     const visitMetadata =
-      mockCurrentVisit.visitType.display +
+      mockVisitInContext.visitType.display +
       ' Started: ' +
-      formatDatetime(parseDate(mockCurrentVisit.startDatetime), { mode: 'wide' });
+      formatDatetime(parseDate(mockVisitInContext.startDatetime), { mode: 'wide' });
 
     expect(
       screen.getByRole('tooltip', {
@@ -44,8 +44,8 @@ describe('VisitBannerTag', () => {
 
   it('should not render active visit tag for deceased patients', () => {
     mockUseVisitOrOfflineVisit.mockReturnValue({
-      activeVisit: mockCurrentVisit,
-      currentVisit: mockCurrentVisit,
+      activeVisit: mockVisitInContext,
+      visitInContext: mockVisitInContext,
       currentVisitIsRetrospective: false,
       error: null,
       isLoading: false,

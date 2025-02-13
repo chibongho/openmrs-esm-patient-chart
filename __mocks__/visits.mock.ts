@@ -42,7 +42,7 @@ export const mockVisits = {
   },
 };
 
-export const mockCurrentVisit = {
+export const mockVisitInContext = {
   uuid: '17f512b4-d264-4113-a6fe-160cb38cb46e',
   encounters: [],
   patient: { uuid: '8673ee4f-e2ab-4077-ba55-4980f408773e' },

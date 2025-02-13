@@ -55,7 +55,7 @@ const ImmunizationsForm: React.FC<DefaultPatientWorkspaceProps> = ({
   const { t } = useTranslation();
   const { immunizationsConfig } = useConfig<ConfigObject>();
   const currentUser = useSession();
-  const { currentVisit } = useVisit(patientUuid);
+  const { visitInContext } = useVisit(patientUuid);
   const isTablet = useLayoutType() === 'tablet';
   const { immunizationsConceptSet } = useImmunizationsConceptSet(immunizationsConfig);
   const { mutate } = useImmunizations(patientUuid);
@@ -178,7 +178,7 @@ const ImmunizationsForm: React.FC<DefaultPatientWorkspaceProps> = ({
       savePatientImmunization(
         mapToFHIRImmunizationResource(
           immunization,
-          immunizationToEditMeta?.visitUuid || currentVisit?.uuid,
+          immunizationToEditMeta?.visitUuid || visitInContext?.uuid,
           currentUser?.sessionLocation?.uuid,
           currentUser?.currentProvider?.uuid,
         ),
@@ -209,7 +209,7 @@ const ImmunizationsForm: React.FC<DefaultPatientWorkspaceProps> = ({
       currentUser?.sessionLocation?.uuid,
       patientUuid,
       currentUser?.currentProvider?.uuid,
-      currentVisit?.uuid,
+      visitInContext?.uuid,
       immunizationToEditMeta,
       immunizationsConceptSet,
       closeWorkspaceWithSavedChanges,

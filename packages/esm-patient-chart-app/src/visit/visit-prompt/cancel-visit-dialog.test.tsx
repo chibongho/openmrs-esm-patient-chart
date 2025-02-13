@@ -2,7 +2,7 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useVisit, openmrsFetch, showSnackbar, type FetchResponse } from '@openmrs/esm-framework';
-import { mockCurrentVisit, mockVisitQueueEntries } from '__mocks__';
+import { mockVisitInContext, mockVisitQueueEntries } from '__mocks__';
 import { mockPatient } from 'tools';
 import { type MappedVisitQueueEntry, useVisitQueueEntry } from '../queue-entry/queue.resource';
 import { removeQueuedPatient } from '../hooks/useServiceQueue';
@@ -32,13 +32,17 @@ jest.mock('../hooks/useServiceQueue', () => {
 describe('Cancel visit', () => {
   beforeEach(() => {
     mockUseVisit.mockReturnValue({
-      activeVisit: mockCurrentVisit,
-      currentVisit: mockCurrentVisit,
+      activeVisit: mockVisitInContext,
+      currentVisit: mockVisitInContext,
       currentVisitIsRetrospective: false,
       error: null,
       isLoading: false,
       isValidating: false,
       mutate: jest.fn(),
+      visitInContext: mockVisitInContext,
+      visitInContextIsRetrospective: false,
+      visitInContextUuid: null,
+      setVisitContext: jest.fn(),
     });
   });
 
@@ -77,7 +81,7 @@ describe('Cancel visit', () => {
 
     await user.click(cancelVisitButton);
 
-    expect(mockOpenmrsFetch).toHaveBeenCalledWith(`/ws/rest/v1/visit/${mockCurrentVisit.uuid}`, {
+    expect(mockOpenmrsFetch).toHaveBeenCalledWith(`/ws/rest/v1/visit/${mockVisitInContext.uuid}`, {
       method: 'DELETE',
     });
     expect(mockShowSnackbar).toHaveBeenCalledWith(
@@ -121,7 +125,7 @@ describe('Cancel visit', () => {
 
     await user.click(cancelVisitButton);
 
-    expect(mockOpenmrsFetch).toHaveBeenCalledWith(`/ws/rest/v1/visit/${mockCurrentVisit.uuid}`, {
+    expect(mockOpenmrsFetch).toHaveBeenCalledWith(`/ws/rest/v1/visit/${mockVisitInContext.uuid}`, {
       method: 'DELETE',
     });
     expect(mockShowSnackbar).toHaveBeenCalledWith({

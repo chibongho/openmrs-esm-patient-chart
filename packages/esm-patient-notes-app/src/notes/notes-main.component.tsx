@@ -22,7 +22,7 @@ interface NotesOverviewProps {
 
 const NotesMain: React.FC<NotesOverviewProps> = ({ patientUuid, pageSize, urlLabel, pageUrl }) => {
   const { t } = useTranslation();
-  const { currentVisit } = useVisit(patientUuid);
+  const { visitInContext } = useVisit(patientUuid);
   const displayText = t('visitNotes', 'Visit notes');
   const headerTitle = t('visitNotes', 'Visit notes');
   const { visitNotes, error, isLoading, isValidating } = useVisitNotes(patientUuid);
@@ -30,12 +30,12 @@ const NotesMain: React.FC<NotesOverviewProps> = ({ patientUuid, pageSize, urlLab
   const isDesktop = layout === 'large-desktop' || layout === 'small-desktop';
 
   const launchVisitNoteForm = React.useCallback(() => {
-    if (currentVisit) {
+    if (visitInContext) {
       launchPatientWorkspace('visit-notes-form-workspace');
     } else {
       launchStartVisitPrompt();
     }
-  }, [currentVisit]);
+  }, [visitInContext]);
 
   if (isLoading) {
     return <DataTableSkeleton role="progressbar" compact={isDesktop} zebra />;

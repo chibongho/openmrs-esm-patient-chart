@@ -5516,9 +5516,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openmrs/esm-api@npm:6.0.5-pre.2681":
-  version: 6.0.5-pre.2681
-  resolution: "@openmrs/esm-api@npm:6.0.5-pre.2681"
+"@openmrs/esm-api@portal:/home/cbho/workspace/openmrs-esm-core/packages/framework/esm-api::locator=%40openmrs%2Fesm-patient-chart%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@openmrs/esm-api@portal:/home/cbho/workspace/openmrs-esm-core/packages/framework/esm-api::locator=%40openmrs%2Fesm-patient-chart%40workspace%3A."
   dependencies:
     "@types/fhir": "npm:0.0.31"
     lodash-es: "npm:^4.17.21"
@@ -5527,9 +5527,8 @@ __metadata:
     "@openmrs/esm-error-handling": 6.x
     "@openmrs/esm-navigation": 6.x
     "@openmrs/esm-offline": 6.x
-  checksum: 10/928e8099a64d06decb391df58ee3d0ba3b5e3e2279bb00392c448649e416d6cfb2ce7f5b80d72482df306d4941e0864ae3c0355cbdeb8542495e421c75c0edbb
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@openmrs/esm-app-shell@npm:6.0.5-pre.2681":
   version: 6.0.5-pre.2681
@@ -6258,9 +6257,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@openmrs/esm-react-utils@npm:6.0.5-pre.2681":
-  version: 6.0.5-pre.2681
-  resolution: "@openmrs/esm-react-utils@npm:6.0.5-pre.2681"
+"@openmrs/esm-react-utils@portal:/home/cbho/workspace/openmrs-esm-core/packages/framework/esm-react-utils::locator=%40openmrs%2Fesm-patient-chart%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@openmrs/esm-react-utils@portal:/home/cbho/workspace/openmrs-esm-core/packages/framework/esm-react-utils::locator=%40openmrs%2Fesm-patient-chart%40workspace%3A."
   dependencies:
     lodash-es: "npm:^4.17.21"
     single-spa-react: "npm:^6.0.2"
@@ -6281,9 +6280,8 @@ __metadata:
     react-i18next: 11.x
     rxjs: 6.x
     swr: 2.x
-  checksum: 10/b804358dfbd6f3a8a9a8dfb8bfbc6801a9bcb51782677af50ba1c42f1e9e44ff8e9ca7fda25bc8037a2fb09ab7d15857162646720507a59de46eee3f501960b8
   languageName: node
-  linkType: hard
+  linkType: soft
 
 "@openmrs/esm-routes@npm:6.0.5-pre.2681":
   version: 6.0.5-pre.2681

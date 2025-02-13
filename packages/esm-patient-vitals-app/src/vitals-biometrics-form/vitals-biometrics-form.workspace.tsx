@@ -85,7 +85,7 @@ const VitalsAndBiometricsForm: React.FC<DefaultPatientWorkspaceProps> = ({
 
   const session = useSession();
   const patient = usePatient(patientUuid);
-  const { currentVisit } = useVisit(patientUuid);
+  const { visitInContext } = useVisit(patientUuid);
   const { data: conceptUnits, conceptMetadata, conceptRanges, isLoading } = useVitalsConceptMetadata();
   const [hasInvalidVitals, setHasInvalidVitals] = useState(false);
   const [muacColorCode, setMuacColorCode] = useState('');
@@ -107,7 +107,7 @@ const VitalsAndBiometricsForm: React.FC<DefaultPatientWorkspaceProps> = ({
     promptBeforeClosing(() => isDirty);
   }, [isDirty, promptBeforeClosing]);
 
-  const encounterUuid = currentVisit?.encounters?.find((encounter) => encounter?.form?.uuid === config.vitals.formUuid)
+  const encounterUuid = visitInContext?.encounters?.find((encounter) => encounter?.form?.uuid === config.vitals.formUuid)
     ?.uuid;
 
   const midUpperArmCircumference = watch('midUpperArmCircumference');
@@ -242,8 +242,8 @@ const VitalsAndBiometricsForm: React.FC<DefaultPatientWorkspaceProps> = ({
         state={{
           view: 'form',
           formUuid: config.vitals.formUuid,
-          visitUuid: currentVisit?.uuid,
-          visitTypeUuid: currentVisit?.visitType?.uuid,
+          visitUuid: visitInContext?.uuid,
+          visitTypeUuid: visitInContext?.visitType?.uuid,
           patientUuid: patientUuid ?? null,
           patient,
           encounterUuid,

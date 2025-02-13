@@ -14,7 +14,7 @@ import {
 import { configSchema } from '../config-schema';
 import { type ImmunizationWidgetConfigObject } from '../types/fhir-immunization-domain';
 import { immunizationFormSub } from './utils';
-import { mockCurrentVisit, mockSessionDataResponse } from '__mocks__';
+import { mockVisitInContext, mockSessionDataResponse } from '__mocks__';
 import { mockPatient } from 'tools';
 import { savePatientImmunization } from './immunizations.resource';
 import ImmunizationsForm from './immunizations-form.workspace';
@@ -97,8 +97,8 @@ mockUseConfig.mockReturnValue({
 
 mockUseSession.mockReturnValue(mockSessionDataResponse.data);
 mockUseVisit.mockReturnValue({
-  activeVisit: mockCurrentVisit,
-  currentVisit: mockCurrentVisit,
+  activeVisit: mockVisitInContext,
+  currentVisit: mockVisitInContext,
   currentVisitIsRetrospective: false,
   error: null,
   isLoading: false,

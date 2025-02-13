@@ -91,7 +91,7 @@ export function useOrderBasket<T extends OrderBasketItem>(
     orderBasketStore,
     orderBasketStoreActions,
   );
-  const orders = getOrderItems(items, grouping);
+  const orders = getOrderItems(items, grouping) as T[];
 
   useEffect(() => {
     if (postDataPrepFunction && !postDataPrepFunctions[grouping]) {
